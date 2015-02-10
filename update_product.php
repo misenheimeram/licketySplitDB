@@ -16,14 +16,11 @@ if (isset($_POST['pid']) && isset($_POST['name']) && isset($_POST['price']) && i
     $price = $_POST['price'];
     $description = $_POST['description'];
 
-    // include db connect class
-    require_once __DIR__ . '/db_connect.php';
-
     // connecting to db
-    $db = new DB_CONNECT();
+	include("db_connect.php");
 
     // mysql update row with matched pid
-    $result = mysql_query("UPDATE products SET name = '$name', price = '$price', description = '$description' WHERE pid = $pid");
+    $result = mysqli_query($mydb, "UPDATE products SET name = '$name', price = '$price', description = '$description' WHERE pid = $pid");
 
     // check if row inserted or not
     if ($result) {
@@ -36,6 +33,7 @@ if (isset($_POST['pid']) && isset($_POST['name']) && isset($_POST['price']) && i
     } else {
         
     }
+	mysqli_close($mydb);
 } else {
     // required field is missing
     $response["success"] = 0;

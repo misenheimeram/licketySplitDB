@@ -9,25 +9,24 @@
 $response = array();
 
 
-// include db connect class
-require_once __DIR__ . '/db_connect.php';
-
-// connecting to db
-$db = new DB_CONNECT();
-
 // check for post data
 if (isset($_GET["pid"])) {
     $pid = $_GET['pid'];
+	// connecting to db
+	include("db_connect.php");
 
     // get a product from products table
-    $result = mysql_query("SELECT *FROM products WHERE pid = $pid");
+    $result = mysqli_query($mydb, "SELECT *FROM products WHERE pid = $pid");
 
     if (!empty($result)) {
         // check for empty result
-        if (mysql_num_rows($result) > 0) {
+        if (mysqli_num_rows($result) > 0) {
 
-            $result = mysql_fetch_array($result);
+            $result = mysqli_fetch_array($result);
 
+            // user node
+            $response["product"] = array();
+			
             $product = array();
             $product["pid"] = $result["pid"];
             $product["name"] = $result["name"];
@@ -38,8 +37,6 @@ if (isset($_GET["pid"])) {
             // success
             $response["success"] = 1;
 
-            // user node
-            $response["product"] = array();
 
             array_push($response["product"], $product);
 
@@ -61,6 +58,7 @@ if (isset($_GET["pid"])) {
         // echo no users JSON
         echo json_encode($response);
     }
+	mysqli_close($mydb);
 } else {
     // required field is missing
     $response["success"] = 0;

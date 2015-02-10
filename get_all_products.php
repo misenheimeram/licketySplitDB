@@ -7,10 +7,6 @@
 // array for JSON response
 $response = array();
 
-
-// include db connect class
-require_once __DIR__ . '/db_connect.php';
-
 // connecting to db
 include("db_connect.php");
 

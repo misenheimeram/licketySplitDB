@@ -15,14 +15,11 @@ if (isset($_POST['name']) && isset($_POST['price']) && isset($_POST['description
     $price = $_POST['price'];
     $description = $_POST['description'];
 
-    // include db connect class
-    require_once __DIR__ . '/db_connect.php';
-
     // connecting to db
-    $db = new DB_CONNECT();
+	include("db_connect.php");
 
     // mysql inserting a new row
-    $result = mysql_query("INSERT INTO products(name, price, description) VALUES('$name', '$price', '$description')");
+    $result = mysqli_query($mydb,"INSERT INTO products(name, price, description) VALUES('$name', '$price', '$description')");
 
     // check if row inserted or not
     if ($result) {
@@ -40,6 +37,7 @@ if (isset($_POST['name']) && isset($_POST['price']) && isset($_POST['description
         // echoing JSON response
         echo json_encode($response);
     }
+	mysqli_close($mydb);
 } else {
     // required field is missing
     $response["success"] = 0;
